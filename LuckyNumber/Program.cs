@@ -18,18 +18,20 @@ namespace LuckyNumber
                 int numberOfNumber = 6;
                 int jackpot = 55000;
                 int correctNumbers = 0;
+                int dupCheck = 0;
 
                 Console.WriteLine("Welcome to the greatest guessing game in the history of games!\n");
-                Console.WriteLine("You can win up to ${0} if you can get all {1} numbers right!\n",jackpot,numberOfNumber);
+                Console.WriteLine("You can win up to ${0} if you can get all {1} numbers right!\n", jackpot, numberOfNumber);
                 // Ask the user for a starting number for the lowest number in the number range.
                 Console.WriteLine("Please enter a low number that is 0 or higher.");
                 int startingNumber = int.Parse(Console.ReadLine());
 
-                while (startingNumber<0)
+                while (startingNumber < 0)
                 {
                     Console.WriteLine("\nPlease enter a number that is higher than 0!");
                     startingNumber = int.Parse(Console.ReadLine());
                 }
+
 
                 // Ask the user for an ending number for the highest number in the number range.
                 Console.WriteLine("\nPlease enter a higher number.");
@@ -40,23 +42,45 @@ namespace LuckyNumber
                 for (int i = 0; i < guessNumbers.Length; i++)
                 {
 
-                    Console.WriteLine("\nPlease enter {0} numbers one at a time. These will be your {0} numbers to match our \"Lucky Numbers\"",numberOfNumber); 
-                    guessNumbers[i] = int.Parse(Console.ReadLine());
+                    Console.WriteLine("\nPlease enter {0} numbers one at a time. These will be your {0} numbers to match our \"Lucky Numbers\"", numberOfNumber);
+                    dupCheck = int.Parse(Console.ReadLine());
 
-                    while (guessNumbers[i] < startingNumber || guessNumbers[i] > endingNumber)
+                    while (dupCheck < startingNumber || dupCheck > endingNumber)
                     {
                         Console.WriteLine("\nPlease enter a number inbetween {0}-{1}", startingNumber, endingNumber);
-                        guessNumbers[i] = int.Parse(Console.ReadLine());
+                        dupCheck = int.Parse(Console.ReadLine());
                     }
+
+                    while (guessNumbers.Contains(dupCheck))
+                    {
+                        Console.WriteLine("\nPlease enter a number you have not already entered.");
+                        dupCheck = int.Parse(Console.ReadLine());
+
+                        while (dupCheck < startingNumber || dupCheck > endingNumber)
+                        {
+                            Console.WriteLine("\nPlease enter a number inbetween {0}-{1}", startingNumber, endingNumber);
+                            dupCheck = int.Parse(Console.ReadLine());
+                        }
+
+                    }
+                    guessNumbers[i] = dupCheck;
+
+
                 }
                 // The program should randomly generate 6 numbers using a loop
                 // The randomly generated numbers should be stored in an array
 
                 int[] luckyNumbers = new int[numberOfNumber];
 
+
                 for (int i = 0; i < luckyNumbers.Length; i++)
                 {
-                    luckyNumbers[i] = randomNumber.Next(startingNumber, endingNumber + 1);
+                    do
+                    {
+                        dupCheck = randomNumber.Next(startingNumber, endingNumber + 1);
+                    }
+                    while (luckyNumbers.Contains(dupCheck));
+                    luckyNumbers[i] = dupCheck;
                 }
 
                 Array.Sort(guessNumbers);
@@ -69,11 +93,13 @@ namespace LuckyNumber
 
                 for (int i = 0; i < guessNumbers.Length; i++)
                 {
-                    foreach (int number in guessNumbers)
-                        if (number == luckyNumbers[i])
+                    foreach (int number in luckyNumbers)
+                    {
+                        if (number == guessNumbers[i])
                         {
                             correctNumbers += 1;
                         }
+                    }
                 }
                 Console.WriteLine("\nYou guessed {0} numbers correctly!!!", correctNumbers);
 
@@ -116,22 +142,6 @@ namespace LuckyNumber
                 }
             }
             while (playAgain == "yes");
-                
-                // Make your program ensure none of the generated numbers are repeated.For example, the following is a valid output:
-                //            Lucky Number: 12
-                //Lucky Number: 47
-                //Lucky Number: 28
-                //Lucky Number: 3
-                //Lucky Number: 19
-                //Lucky Number: 35
-                //But, the following output is invalid because 12 is generated twice.
-                //Lucky Number: 12
-                //Lucky Number: 47
-                //Lucky Number: 28
-                //Lucky Number: 3
-                //Lucky Number: 19
-                //Lucky Number: 12
-                //If there is a repeated number, replace it with a new number.Do this until there are no repeated numbers.
 
 
 
@@ -139,9 +149,6 @@ namespace LuckyNumber
 
 
 
-
-
-
-            }
+        }
     }
-    }
+}
