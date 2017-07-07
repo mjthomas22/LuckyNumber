@@ -18,14 +18,21 @@ namespace LuckyNumber
                 int numberOfNumber = 6;
                 int jackpot = 55000;
                 int correctNumbers = 0;
-                
-               
+
+                Console.WriteLine("Welcome to the greatest guessing game in the history of games!\n");
+                Console.WriteLine("You can win up to ${0} if you can get all {1} numbers right!\n",jackpot,numberOfNumber);
                 // Ask the user for a starting number for the lowest number in the number range.
-                Console.WriteLine("Please enter the lowest possible number.");
+                Console.WriteLine("Please enter a low number that is 0 or higher.");
                 int startingNumber = int.Parse(Console.ReadLine());
 
+                while (startingNumber<0)
+                {
+                    Console.WriteLine("\nPlease enter a number that is higher than 0!");
+                    startingNumber = int.Parse(Console.ReadLine());
+                }
+
                 // Ask the user for an ending number for the highest number in the number range.
-                Console.WriteLine("please enter the highest possible number.");
+                Console.WriteLine("\nPlease enter a higher number.");
                 int endingNumber = int.Parse(Console.ReadLine());
 
                 // Ask the user to guess the 6 numbers the user thinks will be the lucky numbers generated within the number range.
@@ -33,12 +40,12 @@ namespace LuckyNumber
                 for (int i = 0; i < guessNumbers.Length; i++)
                 {
 
-                    Console.WriteLine("Please enter the your numbers one at a time.");
+                    Console.WriteLine("\nPlease enter {0} numbers one at a time. These will be your {0} numbers to match our \"Lucky Numbers\"",numberOfNumber); 
                     guessNumbers[i] = int.Parse(Console.ReadLine());
 
                     while (guessNumbers[i] < startingNumber || guessNumbers[i] > endingNumber)
                     {
-                        Console.WriteLine("Please enter a number inbetween {0}-{1}", startingNumber, endingNumber);
+                        Console.WriteLine("\nPlease enter a number inbetween {0}-{1}", startingNumber, endingNumber);
                         guessNumbers[i] = int.Parse(Console.ReadLine());
                     }
                 }
@@ -57,7 +64,7 @@ namespace LuckyNumber
 
                 for (int i = 0; i < numberOfNumber; i++)
                 {
-                    Console.WriteLine("Lucky Number:{0}\tYour Number:{1}", luckyNumbers[i], guessNumbers[i]);
+                    Console.WriteLine("\nLucky Number:{0}\t\t\tYour Number:{1}", luckyNumbers[i], guessNumbers[i]);
                 }
 
                 for (int i = 0; i < guessNumbers.Length; i++)
@@ -68,39 +75,44 @@ namespace LuckyNumber
                             correctNumbers += 1;
                         }
                 }
-                Console.WriteLine("Congrats you guessed {0} numbers correctly!!!", correctNumbers);
+                Console.WriteLine("\nYou guessed {0} numbers correctly!!!", correctNumbers);
 
                 if (correctNumbers == 6)
                 {
-                    Console.WriteLine("You have done the impossible you have won ${0}!!!!!!", jackpot * 1);
+                    Console.WriteLine("\nYou have done the impossible you have won ${0}!!!!!!", jackpot * 1);
                 }
 
                 else if (correctNumbers >= 4)
                 {
-                    Console.WriteLine("You did amazing you have won ${0}!!!", jackpot * .7);
+                    Console.WriteLine("\nYou did amazing you have won ${0}!!!", jackpot * .7);
                 }
 
                 else if (correctNumbers >= 2)
                 {
-                    Console.WriteLine("You did pretty good...You have won ${0}!!", jackpot * .25);
+                    Console.WriteLine("\nYou did pretty good...You have won ${0}!!", jackpot * .25);
                 }
 
                 else if (correctNumbers == 1)
                 {
-                    Console.WriteLine("Eh, you got one not too bad I guess. As a consolation you have won ${0}.", jackpot * .05);
+                    Console.WriteLine("\nEh, you got one not too bad I guess. As a consolation you have won ${0}.", jackpot * .05);
                 }
                 else
                 {
-                    Console.WriteLine("Better luck next time!!!");
+                    Console.WriteLine("\nBetter luck next time!!!");
                 }
 
-                Console.WriteLine("\n\n\nWould you like to play again? YES/NO");
+                Console.WriteLine("\nWould you like to play again? YES/NO");
                 playAgain = Console.ReadLine();
                 while (playAgain != "yes")
                 {
-                    Console.WriteLine("Thanks for playing!");
-                    Console.WriteLine("Did you change your mind? YES/NO");
+                    Console.WriteLine("\nThanks for playing!");
+                    Console.WriteLine("\nDid you change your mind? YES/NO/QUIT");
                     playAgain = Console.ReadLine();
+
+                    if (playAgain.ToLower() == "quit")
+                    {
+                        break;
+                    }
                 }
             }
             while (playAgain == "yes");
